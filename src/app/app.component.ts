@@ -1,3 +1,4 @@
+import { MessageService } from './services/message.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +7,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'socket-demo';
+  public newMessage: string | undefined;
+  messageList:  string[] = [];
+
+  constructor(private messageService: MessageService) {
+  }
+
+  sendMessage() {
+    this.messageService.sendMessage(this.newMessage);
+    this.newMessage = '';
+  }
+  ngOnInit() {
+    this.messageService
+      .getMessages()
+      .subscribe((message: string) => {
+        this.messageList.push(message);
+      });
+  }
 }
